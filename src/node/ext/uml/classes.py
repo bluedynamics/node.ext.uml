@@ -23,10 +23,6 @@ class Class(UMLElement):
     def operations(self):
         return self.filtereditems(IOperation)
 
-    @property
-    def attributes(self):
-        return self.filtereditems(IAttribute)
-
 
 class Interface(UMLElement):
     implements(IInterface)
