@@ -6,7 +6,7 @@ shortdesc = "UML metamodel implementation based on nodes"
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), 'LICENSE.rst')).read()
 
-setup(name='node',
+setup(name='node.ext.uml',
       version=version,
       description=shortdesc,
       long_description=longdesc,
@@ -23,7 +23,7 @@ setup(name='node',
       license='BSD',
       packages=find_packages('src'),
       package_dir = {'': 'src'},
-      namespace_packages=['node', 'node.ext.uml'],
+      namespace_packages=['node', 'node.ext'],
       include_package_data=True,
       zip_safe=True,
       install_requires=[
@@ -34,6 +34,7 @@ setup(name='node',
       extras_require={
           'test': [
               'interlude',
+              'zope.configuration',
           ]
       },
       entry_points="""
