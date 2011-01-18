@@ -1,8 +1,8 @@
 from zope.interface import implements
-from zope.location import LocationIterator
 from zodict.node import Node
 from zodict.interfaces import IRoot
 from zodict.interfaces import ICallableNode
+from node.ext.uml.interfaces import ModelIllFormedException
 from node.ext.uml.interfaces import IClass
 from node.ext.uml.interfaces import IInterface
 from node.ext.uml.interfaces import (
@@ -13,6 +13,7 @@ from node.ext.uml.interfaces import (
     ITaggedValue,
     IPackage,
     IModel,
+    IActivity,
 )
 
 import logging
@@ -24,6 +25,10 @@ INFINITE = object()
 class UMLElement(Node):
     implements(IUMLElement, ICallableNode)
 
+    abstract = True
+    xmiid = None
+    XMI = None
+
     def __call__(self):
         """Does nothing but fullfill contract.
         """
@@ -32,6 +37,12 @@ class UMLElement(Node):
     @property
     def name(self):
         return self.__name__
+
+    @property
+    def normalizedname(self):
+        # TODO: implement me
+        # TODO: @property ok here? this returns another property...
+        raise NotImplementedError
 
     @property
     def maxoccurs(self):
@@ -47,11 +58,41 @@ class UMLElement(Node):
                 return stereotype
         return None
 
+    def check_model_constraints(self):
+        try:
+            assert(not self.abstract)
+        except AssertionError:
+            raise ModelIllFormedException,\
+                  str(self) +  " " +\
+                  "Cannot directly use abstract base classes"
+
+
 class Profile(UMLElement):
     implements(IProfile)
+    abstract = False
+
+    # TODO: check these TODO items if they still apply
+
+    ### TODO: let owned_stereotypes return the stereotypes defined in profile
+    #def __init__(self, name):
+    #    super(Profile,self).__init__(name)
+    #    owned_stereotypes = dict()
+
+    #def add_stereotype(self, name, extentended):
+    #    owned_stereotypes['name'] = type(name,
+    #                                     (Stereotype,),
+    #                                     {'extended': extended})
+
+    # TODO: Add check_model_constraints - profile only part of package
+
+    # TODO: Let Profile be a Package (without attribute "activities") and let
+    # profiles applied to profile to distinguish between execution-loading
+    # profiles and profiles other ones.
+
 
 class Stereotype(UMLElement):
     implements(IStereotype)
+    abstract = False
 
     def __init__(self, name=None):
         super(UMLElement, self).__init__(name)
@@ -77,13 +118,19 @@ class Stereotype(UMLElement):
                 return tgv
         return None
 
+    def check_model_constraints(self):
+        try:
+            assert(IProfile.providedBy(self.profile))
+        except AssertionError:
+            raise ModelIllFormedException,\
+                  str(self) +  " " +\
+                  u"Stereotype must have a reference to its Profile"
+
 
 class TaggedValue(UMLElement):
     implements(ITaggedValue)
+    abstract = False
 
-    """from uml reference book "tagged value: A tag-value pair attached to a
-    modeling element to hold some piece of information. Each tagged value
-    is shown in the form tag = value. it always is part of a stereotype."""
     value = None
 
 class Datatype(UMLElement):
@@ -92,6 +139,7 @@ class Datatype(UMLElement):
 
 class Package(UMLElement):
     implements(IPackage)
+    abstract = False
 
     @property
     def packages(self):
@@ -105,8 +153,18 @@ class Package(UMLElement):
     def interfaces(self):
         return self.filtereditems(IInterface)
 
+    @property
+    def profiles(self):
+        return self.filtereditems(IProfile)
+
+    @property
+    def activities(self):
+        return self.filtereditems(IActivity)
+
+
 class Model(Package):
     implements(IModel, IRoot)
+    abstract = False
 
     @property
     def datatypes(self):
