@@ -1,0 +1,14 @@
+*.egg-info
+*.mo
+*.pyc
+*.pyo
+*.wpr
+*~
+.*
+bin
+coverage
+develop-eggs
+dist
+eggs
+parts
+!.gitignore
