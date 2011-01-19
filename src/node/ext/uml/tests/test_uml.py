@@ -13,6 +13,7 @@ optionflags = doctest.NORMALIZE_WHITESPACE | \
 TESTFILES = [
     '../core.txt',
     '../classes.txt',
+    '../activities.txt',
     '../utils.txt',
 ]
 
