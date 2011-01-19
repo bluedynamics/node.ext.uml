@@ -1,4 +1,3 @@
-from zodict.node import Node
 from zope.interface import implements
 from node.ext.uml.interfaces import ModelIllFormedException
 
@@ -26,10 +25,6 @@ from node.ext.uml.interfaces import IPreConstraint
 from node.ext.uml.interfaces import IPostConstraint
 
 from node.ext.uml.interfaces import IPackage
-from node.ext.uml.interfaces import IProfile
-from node.ext.uml.interfaces import IStereotype
-from node.ext.uml.interfaces import ITaggedValue
-
 
 
 class ActivityNode(UMLElement):
