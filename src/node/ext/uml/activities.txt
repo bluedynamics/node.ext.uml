@@ -27,7 +27,7 @@ Test if the model provides us with all the elements and methods we expect...
     [<Activity object 'main'...>]
     >>> list(model.profiles)
     [<Profile object 'pr' ...>]
-    >>> model.stereotypes
+    >>> list(model.stereotypes)
     []
 
     >>> act = model['main']
@@ -57,7 +57,7 @@ Test if the model provides us with all the elements and methods we expect...
     [<ActivityEdge object '4'...>]
     >>> list(act['action1'].stereotypes)
     [<Stereotype object 'execution1'...>]
-    >>> list(act['action1'].stereotypes)[0].profile is model.profiles[0]
+    >>> list(act['action1'].stereotypes)[0].profile is list(model.profiles)[0]
     True
     >>> list(act['action1']['execution1'].taggedvalues)
     [<TaggedValue object 'tgv'...>]

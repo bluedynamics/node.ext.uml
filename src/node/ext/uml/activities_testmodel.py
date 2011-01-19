@@ -17,8 +17,10 @@ act['start'] = activities.InitialNode()
 act['fork'] = activities.ForkNode()
 
 act['action1'] = activities.OpaqueAction()
-act['action1']['execution1'] = core.Stereotype(profile=profile)
-act['action1']['execution1']['tgv'] = core.TaggedValue(value="dummy value")
+act['action1']['execution1'] = core.Stereotype()
+act['action1']['execution1'].profile = profile
+act['action1']['execution1']['tgv'] = core.TaggedValue()
+act['action1']['execution1']['tgv'].value = "dummy value"
 act['action1']['lpc1'] = activities.PreConstraint(specification='True is True')
 act['action1']['lpo1'] = activities.PostConstraint(specification='False is False')
 

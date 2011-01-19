@@ -251,8 +251,8 @@ class DecisionNode(ControlNode):
         super(DecisionNode, self).check_model_constraints()
         # [1]
         try:
-            assert len(self.incoming_edges) is 1
-            assert len(self.outgoing_edges) >= 1
+            assert len(list(self.incoming_edges)) is 1
+            assert len(list(self.outgoing_edges)) >= 1
         except AssertionError:
             raise ModelIllFormedException,\
                   str(self) +  " " +\
@@ -268,8 +268,8 @@ class ForkNode(ControlNode):
         super(ForkNode, self).check_model_constraints()
         # [1]
         try:
-            assert len(self.incoming_edges) is 1
-            assert len(self.outgoing_edges) >= 1
+            assert len(list(self.incoming_edges)) is 1
+            assert len(list(self.outgoing_edges)) >= 1
         except AssertionError:
             raise ModelIllFormedException,\
                   str(self) +  " " +\
@@ -285,8 +285,8 @@ class JoinNode(ControlNode):
         super(JoinNode, self).check_model_constraints()
         # [1]
         try:
-            assert len(self.incoming_edges) >= 1
-            assert len(self.outgoing_edges) is 1
+            assert len(list(self.incoming_edges)) >= 1
+            assert len(list(self.outgoing_edges)) is 1
         except AssertionError:
             raise ModelIllFormedException,\
                   str(self) +  " " +\
@@ -305,8 +305,8 @@ class MergeNode(ControlNode):
         super(MergeNode, self).check_model_constraints()
         # [1]
         try:
-            assert len(self.incoming_edges) >= 1
-            assert len(self.outgoing_edges) is 1
+            assert len(list(self.incoming_edges)) >= 1
+            assert len(list(self.outgoing_edges)) is 1
         except AssertionError:
             raise ModelIllFormedException,\
                   str(self) +  " " +\
