@@ -1,7 +1,7 @@
 from zope.interface import implements
 from node.ext.uml.interfaces import ModelIllFormedException
 
-from node.ext.uml.interfaces import IElement
+from node.ext.uml.interfaces import IUMLElement
 
 from node.ext.uml.core import UMLElement
 
@@ -339,17 +339,17 @@ class PostConstraint(Constraint):
 def validate(node):
     """Recursive model validation
     """
-    if IElement.providedBy(node):
+    if IUMLElement.providedBy(node):
         node.check_model_constraints()
-    for sub in node.filtereditems(IElement):
+    for sub in node.filtereditems(IUMLElement):
         validate(sub)
 
 def get_element_by_xmiid(node, xmiid):
     if node.xmiid == xmiid:
         return node
-    # TODO: may not get all elements if an INode but not IElement providing
+    # TODO: may not get all elements if an INode but not IUMLElement providing
     # element sits within the hierachy
-    for el in node.filtereditems(IElement):
+    for el in node.filtereditems(IUMLElement):
         ele = get_element_by_xmiid(el, xmiid)
         if ele is not None:
             return ele
