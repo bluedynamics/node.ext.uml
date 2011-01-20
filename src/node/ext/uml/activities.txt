@@ -13,8 +13,8 @@ We cannot instantiate abstract base classes
     ModelIllFormedException: <Behavior...> Cannot directly use abstract base classes
 
 Import the model.
-If you want to know how to create a model, look into activities_testmodel.py
-    >>> from node.ext.uml.activities_testmodel import model
+If you want to know how to create a model, look into tests/env.py
+    >>> from node.ext.uml.tests.env import model
 
 Validate the model
     >>> from node.ext.uml.activities import validate
