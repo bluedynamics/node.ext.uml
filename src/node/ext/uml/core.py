@@ -1,7 +1,10 @@
+from plumber import Plumber
 from zope.interface import implements
 from node.base import OrderedNode
 from node.interfaces import IRoot
 from node.interfaces import ICallableNode
+from node.plumbing.reference import Reference
+from node.plumbing.order import Order
 from node.ext.uml.interfaces import ModelIllFormedException
 from node.ext.uml.interfaces import IClass
 from node.ext.uml.interfaces import IInterface
@@ -23,6 +26,8 @@ NODEFAULTMARKER = object()
 INFINITE = object()
 
 class UMLElement(OrderedNode):
+    __metaclass__ = Plumber
+    __pipeline__ = Order, Reference
     implements(IUMLElement, ICallableNode)
 
     abstract = True
