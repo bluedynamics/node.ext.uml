@@ -34,7 +34,7 @@ class Interface(UMLElement):
 class _TypedElement(UMLElement):
 
     def __init__(self, name=None):
-        super(self.__class__, self).__init__(name)
+        super(_TypedElement, self).__init__(name)
         self._type = None
 
     def _gettype(self):
@@ -51,7 +51,7 @@ class Property(_TypedElement):
     implements(IProperty)
 
     def __init__(self, name=None):
-        super(self.__class__, self).__init__(name)
+        super(Property, self).__init__(name)
         self.default = NODEFAULTMARKER
 
 class Operation(UMLElement):
@@ -65,7 +65,7 @@ class Parameter(_TypedElement):
     implements(IParameter)
 
     def __init__(self, name=None):
-        super(self.__class__, self).__init__(name)
+        super(Parameter, self).__init__(name)
         self.default = NODEFAULTMARKER
         self.direction = 'in'
 
@@ -75,7 +75,7 @@ class Generalization(UMLElement):
     implements(IGeneralization)
 
     def __init__(self, name=None):
-        super(self.__class__, self).__init__(name)
+        super(Generalization, self).__init__(name)
         self._general = None
 
     @property
@@ -97,7 +97,7 @@ class InterfaceRealization(UMLElement):
     implements(IInterfaceRealization)
 
     def __init__(self, name=None):
-        super(self.__class__, self).__init__(name)
+        super(InterfaceRealization, self).__init__(name)
         self._contract = None
 
     @property
@@ -119,7 +119,7 @@ class Association(UMLElement):
     implements(IAssociation)
 
     def __init__(self, name=None):
-        super(self.__class__, self).__init__(name)
+        super(Association, self).__init__(name)
         self._memberEnds = list()
 
     def _getmemberEnds(self):
@@ -143,7 +143,7 @@ class AssociationEnd(UMLElement):
     AGGREGATIONS = [SHARED, COMPOSITE]
 
     def __init__(self, name=None):
-        super(self.__class__, self).__init__(name)
+        super(AssociationEnd, self).__init__(name)
         self._type = None
         self._association = None
         self.lowervalue = None
@@ -176,7 +176,7 @@ class Dependency(UMLElement):
     implements(IDependency)
 
     def __init__(self, name=None):
-        super(self.__class__, self).__init__(name)
+        super(Dependency, self).__init__(name)
         self._client = None
         self._supplier = None
 

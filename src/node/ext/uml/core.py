@@ -35,7 +35,7 @@ class UMLElement(OrderedNode):
     XMI = None
 
     def __init__(self, *args, **kw):
-        super(self.__class__, self).__init__(*args, **kw)
+        super(UMLElement, self).__init__(*args, **kw)
 
     def __call__(self):
         """Does nothing but fullfill contract.
@@ -83,7 +83,7 @@ class Profile(UMLElement):
 
     ### TODO: let owned_stereotypes return the stereotypes defined in profile
     #def __init__(self, name):
-    #    super(self.__class__,self).__init__(name)
+    #    super(Profile, self).__init__(name)
     #    owned_stereotypes = dict()
 
     #def add_stereotype(self, name, extentended):
@@ -103,7 +103,7 @@ class Stereotype(UMLElement):
     abstract = False
 
     def __init__(self, name=None):
-        super(self.__class__, self).__init__(name)
+        super(Stereotype, self).__init__(name)
         self._profile = None
 
     def _getprofile(self):
