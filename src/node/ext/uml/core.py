@@ -34,9 +34,6 @@ class UMLElement(OrderedNode):
     xmiid = None
     XMI = None
 
-    def __init__(self, *args, **kw):
-        super(UMLElement, self).__init__(*args, **kw)
-
     def __call__(self):
         """Does nothing but fullfill contract.
         """
