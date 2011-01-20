@@ -28,7 +28,7 @@ setup(name='node.ext.uml',
       zip_safe=True,
       install_requires=[
           'setuptools',
-          'zodict',
+          'node',
           'zope.interface',
       ],
       extras_require={
