@@ -29,6 +29,7 @@ setup(name='node.ext.uml',
       install_requires=[
           'setuptools',
           'node',
+          'plumber',
           'zope.interface',
       ],
       extras_require={
