@@ -47,14 +47,14 @@ class ActivityNode(UMLElement):
     # cache this
     @property
     def incoming_edges(self):
-        for obj in self.activity.filtereditems(IActivityEdge):
+        for obj in self.activity.filtereditervalues(IActivityEdge):
             if obj.target.uuid == self.uuid:
                 yield obj
 
     # cache this
     @property
     def outgoing_edges(self):
-        for obj in self.activity.filtereditems(IActivityEdge):
+        for obj in self.activity.filtereditervalues(IActivityEdge):
             if obj.source.uuid == self.uuid:
                 yield obj
 
@@ -69,11 +69,11 @@ class Action(ActivityNode):
 
     @property
     def preconditions(self):
-        return self.filtereditems(IPreConstraint)
+        return self.filtereditervalues(IPreConstraint)
 
     @property
     def postconditions(self):
-        return self.filtereditems(IPostConstraint)
+        return self.filtereditervalues(IPostConstraint)
 
 
 class Behavior(UMLElement):
@@ -85,11 +85,11 @@ class Behavior(UMLElement):
 
     @property
     def preconditions(self):
-        return self.filtereditems(IPreConstraint)
+        return self.filtereditervalues(IPreConstraint)
 
     @property
     def postconditions(self):
-        return self.filtereditems(IPostConstraint)
+        return self.filtereditervalues(IPostConstraint)
 
 
 class ControlNode(ActivityNode):
@@ -127,16 +127,16 @@ class Activity(Behavior):
 
     @property
     def nodes(self):
-        return self.filtereditems(IActivityNode)
+        return self.filtereditervalues(IActivityNode)
 
     @property
     def edges(self):
-        return self.filtereditems(IActivityEdge)
+        return self.filtereditervalues(IActivityEdge)
 
     # Convinience method, not defined by UML 2.2 specification
     @property
     def actions(self):
-        return self.filtereditems(IAction)
+        return self.filtereditervalues(IAction)
 
 
 class OpaqueAction(Action):
@@ -341,7 +341,7 @@ def validate(node):
     """
     if IUMLElement.providedBy(node):
         node.check_model_constraints()
-    for sub in node.filtereditems(IUMLElement):
+    for sub in node.filtereditervalues(IUMLElement):
         validate(sub)
 
 def get_element_by_xmiid(node, xmiid):
@@ -349,7 +349,7 @@ def get_element_by_xmiid(node, xmiid):
         return node
     # TODO: may not get all elements if an INode but not IUMLElement providing
     # element sits within the hierachy
-    for el in node.filtereditems(IUMLElement):
+    for el in node.filtereditervalues(IUMLElement):
         ele = get_element_by_xmiid(el, xmiid)
         if ele is not None:
             return ele

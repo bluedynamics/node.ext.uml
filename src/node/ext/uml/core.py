@@ -1,7 +1,7 @@
 from zope.interface import implements
-from zodict.node import Node
-from zodict.interfaces import IRoot
-from zodict.interfaces import ICallableNode
+from node.base import OrderedNode
+from node.interfaces import IRoot
+from node.interfaces import ICallableNode
 from node.ext.uml.interfaces import ModelIllFormedException
 from node.ext.uml.interfaces import IClass
 from node.ext.uml.interfaces import IInterface
@@ -22,7 +22,7 @@ log = logging.getLogger('node.ext.uml')
 NODEFAULTMARKER = object()
 INFINITE = object()
 
-class UMLElement(Node):
+class UMLElement(OrderedNode):
     implements(IUMLElement, ICallableNode)
 
     abstract = True
@@ -50,7 +50,7 @@ class UMLElement(Node):
 
     @property
     def stereotypes(self):
-        return self.filtereditems(IStereotype)
+        return self.filtereditervalues(IStereotype)
 
     def stereotype(self, stereotypename):
         for stereotype in self.stereotypes:
@@ -110,7 +110,7 @@ class Stereotype(UMLElement):
 
     @property
     def taggedvalues(self):
-        return self.filtereditems(ITaggedValue)
+        return self.filtereditervalues(ITaggedValue)
 
     def taggedvalue(self, taggedvaluename):
         for tgv in self.taggedvalues:
@@ -143,23 +143,23 @@ class Package(UMLElement):
 
     @property
     def packages(self):
-        return self.filtereditems(IPackage)
+        return self.filtereditervalues(IPackage)
 
     @property
     def classes(self):
-       return self.filtereditems(IClass)
+       return self.filtereditervalues(IClass)
 
     @property
     def interfaces(self):
-        return self.filtereditems(IInterface)
+        return self.filtereditervalues(IInterface)
 
     @property
     def profiles(self):
-        return self.filtereditems(IProfile)
+        return self.filtereditervalues(IProfile)
 
     @property
     def activities(self):
-        return self.filtereditems(IActivity)
+        return self.filtereditervalues(IActivity)
 
 
 class Model(Package):
@@ -168,4 +168,4 @@ class Model(Package):
 
     @property
     def datatypes(self):
-        return self.filtereditems(IDatatype)
+        return self.filtereditervalues(IDatatype)

@@ -21,7 +21,7 @@ class Class(UMLElement):
 
     @property
     def operations(self):
-        return self.filtereditems(IOperation)
+        return self.filtereditervalues(IOperation)
 
 
 class Interface(UMLElement):
@@ -29,7 +29,7 @@ class Interface(UMLElement):
 
     @property
     def operations(self):
-        return self.filtereditems(IOperation)
+        return self.filtereditervalues(IOperation)
 
 class _TypedElement(UMLElement):
 
@@ -59,7 +59,7 @@ class Operation(UMLElement):
 
     @property
     def parameter(self):
-        return self.filtereditems(IParameter)
+        return self.filtereditervalues(IParameter)
 
 class Parameter(_TypedElement):
     implements(IParameter)
@@ -132,7 +132,7 @@ class Association(UMLElement):
 
     @property
     def ownedEnds(self):
-        return self.filtereditems(IAssociationEnd)
+        return self.filtereditervalues(IAssociationEnd)
 
 
 class AssociationEnd(UMLElement):

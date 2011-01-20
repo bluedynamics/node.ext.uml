@@ -8,9 +8,9 @@ James Rumbaugh, Ivar Jacobson, Grady Booch. Addison-Wesley, 2005
 """
 
 from zope.interface import Attribute
-from zodict.interfaces import INode
-from zodict.interfaces import ILeaf
-from zodict.interfaces import IRoot
+from node.interfaces import INode
+from node.interfaces import ILeaf
+from node.interfaces import IRoot
 
 class UMLException(Exception):
     """Generic UML Exception"""

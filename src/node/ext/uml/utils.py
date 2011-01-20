@@ -1,4 +1,4 @@
-from zodict.node import Node
+from node.base import OrderedNode
 from node.ext.uml.interfaces import (
     IGeneralization,
     IAssociationEnd,
@@ -6,7 +6,7 @@ from node.ext.uml.interfaces import (
 )
 from node.ext.uml.classes import AssociationEnd
 
-class Inheritance(Node):
+class Inheritance(OrderedNode):
     """Tree giving the inheritance tree point of view of arbitary UML-elements.
 
     By adapting an UML element this tree shows the generelizations of the
@@ -23,7 +23,7 @@ class Inheritance(Node):
         self.context = context
 
     def _inherited(self):
-        for generelization in self.context.filtereditems(IGeneralization):
+        for generelization in self.context.filtereditervalues(IGeneralization):
             yield generelization.general
 
     def __iter__(self):
@@ -154,7 +154,7 @@ class Associations(object):
         """
         participatinginterfaces = list()
         for directrealization in \
-            self.context.filtereditems(IInterfaceRealization):
+            self.context.filtereditervalues(IInterfaceRealization):
             participatinguuids = [i.uuid for i in participatinginterfaces]
             for inheritance in Inheritance(directrealization.contract).all:
                 if inheritance.context.uuid not in participatinguuids:
@@ -324,7 +324,7 @@ class TaggedValues(object):
         result = self._direct_with_alternatives(tag, stereotype, alternatives)
         if not aggregate and result:
             return result[0]
-        for generalization in self.context.filtereditems(IGeneralization):
+        for generalization in self.context.filtereditervalues(IGeneralization):
             tgv = TaggedValues(generalization.general)
             subres = tgv.inherited(tag, stereotype, alternatives, aggregate)
             if aggregate:
