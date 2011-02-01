@@ -1,15 +1,19 @@
-from plumber import Plumber
+from plumber import plumber
 from zope.interface import implements
 from node.base import OrderedNode
-from node.interfaces import IRoot
-from node.interfaces import ICallableNode
-from node.plumbing.reference import Reference
-from node.plumbing.order import Order
-from node.ext.uml.interfaces import ModelIllFormedException
-from node.ext.uml.interfaces import IClass
-from node.ext.uml.interfaces import IInterface
+from node.interfaces import (
+    IRoot,
+    ICallableNode,
+)
+from node.parts import (
+    Reference,
+    Order,
+)
 from node.ext.uml.interfaces import (
+    ModelIllFormedException,
     IUMLElement,
+    IClass,
+    IInterface,
     IProfile,
     IDatatype,
     IStereotype,
@@ -25,9 +29,10 @@ log = logging.getLogger('node.ext.uml')
 NODEFAULTMARKER = object()
 INFINITE = object()
 
+
 class UMLElement(OrderedNode):
-    __metaclass__ = Plumber
-    __pipeline__ = Order, Reference
+    __metaclass__ = plumber
+    __plumbing__ = Reference, Order
     implements(IUMLElement, ICallableNode)
 
     abstract = True
@@ -137,6 +142,7 @@ class TaggedValue(UMLElement):
     abstract = False
 
     value = None
+
 
 class Datatype(UMLElement):
     implements(IDatatype)

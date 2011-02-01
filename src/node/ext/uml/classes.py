@@ -1,6 +1,8 @@
 from zope.interface import implements
-from node.ext.uml.core import UMLElement
-from node.ext.uml.core import NODEFAULTMARKER
+from node.ext.uml.core import (
+    UMLElement,
+    NODEFAULTMARKER,
+)
 from node.ext.uml.interfaces import (
     IClass,
     IInterface,
@@ -13,6 +15,7 @@ from node.ext.uml.interfaces import (
     IAssociationEnd,
     IDependency,
 )
+
 
 class Class(UMLElement):
     implements(IClass)
@@ -31,6 +34,7 @@ class Interface(UMLElement):
     def operations(self):
         return self.filtereditervalues(IOperation)
 
+
 class _TypedElement(UMLElement):
 
     def __init__(self, name=None):
@@ -47,6 +51,7 @@ class _TypedElement(UMLElement):
 
     type = property(_gettype, _settype)
 
+
 class Property(_TypedElement):
     implements(IProperty)
 
@@ -54,12 +59,14 @@ class Property(_TypedElement):
         super(Property, self).__init__(name)
         self.default = NODEFAULTMARKER
 
+
 class Operation(UMLElement):
     implements(IOperation)
 
     @property
     def parameter(self):
         return self.filtereditervalues(IParameter)
+
 
 class Parameter(_TypedElement):
     implements(IParameter)
@@ -69,7 +76,11 @@ class Parameter(_TypedElement):
         self.default = NODEFAULTMARKER
         self.direction = 'in'
 
-### Elements connecting two elements below here
+
+###############################################################################
+# Elements connecting two elements below here
+###############################################################################
+
 
 class Generalization(UMLElement):
     implements(IGeneralization)

@@ -12,16 +12,21 @@ from node.interfaces import INode
 from node.interfaces import ILeaf
 from node.interfaces import IRoot
 
+
 class UMLException(Exception):
-    """Generic UML Exception"""
+    """Generic UML Exception.
+    """
+
 
 class ModelIllFormedException(UMLException):
-    """UML Exception for invalid models"""
+    """UML Exception for invalid models.
+    """
 
 
 ###############################################################################
 # Base Element
 ###############################################################################
+
 
 class IUMLElement(INode):
     """An XMI Element.
@@ -58,17 +63,21 @@ class IUMLElement(INode):
         """
         # TODO: adapterize, utilitize or do anythin' or leave me as is.
 
+
 ###############################################################################
 # Generic elements specific to profile
 ###############################################################################
 
+
 class IProfile(IUMLElement):
-    """UML Profile
+    """UML Profile.
     """
+
 
 class IDatatype(IUMLElement, ILeaf):
     """UML datatype.
     """
+
 
 class IStereotype(IUMLElement):
     """UML stereotype
@@ -85,6 +94,7 @@ class IStereotype(IUMLElement):
         """returns tagged value by tag name.
         """
 
+
 class ITaggedValue(IUMLElement, ILeaf):
     """UML tagged value.
     """
@@ -95,6 +105,7 @@ class ITaggedValue(IUMLElement, ILeaf):
 ###############################################################################
 # Elements for Class Diagram
 ###############################################################################
+
 
 class IPackage(IUMLElement):
     """An UML Package element.
@@ -107,11 +118,13 @@ class IPackage(IUMLElement):
     interfaces = Attribute(u'list of INode filters contained classes')
     activities = Attribute(u'List of IActivities defined in the package')
 
+
 class IModel(IPackage, IRoot):
     """UML Model Element.
     """
     # convenience
     datatypes = Attribute(u'list of (INode filtered) contained datatypes')
+
 
 class IClass(IUMLElement):
     """UML Class Element.
@@ -137,21 +150,25 @@ class IClass(IUMLElement):
     operations = Attribute(u'list of INode filters contained operation')
     attributes = Attribute(u'list of INode filters contained attributes')
 
+
 class IInterface(IUMLElement):
     """UML Interface Element.
     """
     # convenience
     operations = Attribute(u'list of INode filters contained operation')
 
+
 class IProperty(IUMLElement):
     """UML Attribute Element
     """
     type = Attribute(u'Type of the element - usally referenced')
 
+
 class IOperation(IUMLElement):
     """UML Operation Element.
     """
     parameter = Attribute(u'IOperationParameter implementing Element')
+
 
 class IParameter(IUMLElement, ILeaf):
     """UML Parameter Element of Operation.
@@ -159,9 +176,11 @@ class IParameter(IUMLElement, ILeaf):
     default = Attribute(u'Default value of the element, optional')
     type = Attribute(u'Type of the element - usally referenced')
 
+
 ###############################################################################
 # Connecting Elements for Class Diagram
 ###############################################################################
+
 
 class IGeneralization(IUMLElement):
     """UML Generalization Element.
@@ -182,6 +201,7 @@ class IGeneralization(IUMLElement):
     general = Attribute(u'References the general classifier in the '
                          'Generalization relationship. Subsets '
                          'DirectedRelationship::target')
+
 
 class IInterfaceRealization(IUMLElement):
     """UML InterfaceRealization Element.
@@ -227,6 +247,7 @@ class IAssociation(IUMLElement):
                            "Association::memberEnd Classifier::feature, and"
                            "Namespace::ownedMember.")
 
+
 class IAssociationEnd(IUMLElement):
     """OwnedElement of Associations or Classes."""
 
@@ -248,6 +269,7 @@ class IAssociationEnd(IUMLElement):
                                  "i.e., the composite object has responsibility"
                                  "for the existence and storage of the composed"
                                  "objects (parts).")
+
 
 class IDependency(IUMLElement):
     """ UML Dependency Element.
@@ -280,19 +302,6 @@ class IDependency(IUMLElement):
                           'their domain, which makes a more abstract element '
                           'dependent on that which is more specific. Subsets '
                           'DirectedRelationship::target.')
-
-
-
-
-
-
-
-
-
-
-
-
-########################
 
 
 class IActivityEdge(IUMLElement):
@@ -413,7 +422,6 @@ class IActivity(IBehavior):
     ([2], 149ff)
 
     """
-
     nodes = Attribute(
         u'Nodes coordinated by the activity.'
         u'List of IActivityNode providing objects, Owned.'
@@ -427,15 +435,15 @@ class IActivity(IBehavior):
         u'List of IAction providing objects, Owned'
     )
 
+
 class IOpaqueAction(IAction):
     """An action with implementation-specific semantics. ([1], pg.262)
 
     A primitive activity node whose execution results in a change in the
     state of the system or the return of a value. ([2], pg.136)
-
     """
 
-### Initial and final
+
 class IInitialNode(IControlNode):
     """An initial node is a control node at which flow starts when the activity
     is invoked. ([1], pg.378)
@@ -462,25 +470,21 @@ class IFlowFinalNode(IFinalNode):
     """
 
 
-### More control nodes
 class IDecisionNode(IControlNode):
     """A decision node is a control node that chooses between outgoing flows.
     ([1], pg. 360)
-
     """
 
 
 class IForkNode(IControlNode):
     """A fork node is a control node that splits a flow into multiple concurrent
     flows. ([1], pg. 376)
-
     """
 
 
 class IJoinNode(IControlNode):
     """A join node is a control node that synchronizes multiple flows. ([1],
     pg. 381)
-
     """
 
 
@@ -488,11 +492,9 @@ class IMergeNode(IControlNode):
     """A merge node is a control node that brings together multiple alternate
     flows. It is not used to synchronize concurrent flows but to accept one
     among several alternate flows. ([1], pg. 387)
-
     """
 
 
-### Constraints
 # TODO: decide wether to use IConstraint for guard conditions or not
 class IConstraint(IUMLElement):
     """UML: A constraint is a condition or restriction expressed in natural
@@ -514,15 +516,14 @@ class IConstraint(IUMLElement):
         u"This element is the constraint's context."
     )
 
+
 class IPreConstraint(IConstraint):
     """Marker interface for conditions which must be evaluated before any other
     operations.
-
     """
+
 
 class IPostConstraint(IConstraint):
     """Marker interface for conditions which must be evaluated at the end of
     an Activity or after an actions was executed.
-
     """
-

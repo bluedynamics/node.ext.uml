@@ -6,6 +6,7 @@ from node.ext.uml.interfaces import (
 )
 from node.ext.uml.classes import AssociationEnd
 
+
 class Inheritance(OrderedNode):
     """Tree giving the inheritance tree point of view of arbitary UML-elements.
 
@@ -66,6 +67,7 @@ class Inheritance(OrderedNode):
                 result.append(sub)
         return result
 
+
 class Inheritors(object):
     """Adapter giving the inverse inheritance point of view of arbitary
     UML-elements.
@@ -103,6 +105,7 @@ class Inheritors(object):
                 continue
             result += Inheritors(node).all
         return result
+
 
 class Associations(object):
     """Adapter to get information about an UMLElements associations.
@@ -196,6 +199,7 @@ class Associations(object):
                 result.append(end)
         return result
 
+
 class Aggregations(Associations):
     """Adapter to get information about an UMLElements aggregations.
     """
@@ -203,6 +207,7 @@ class Aggregations(Associations):
     def _match_end(self, end):
         return super(Aggregations, self)._match_end(end) \
                and end.aggregationkind in AssociationEnd.AGGREGATIONS
+
 
 class Aggregators(Associations):
     """Adapter to get information about an UMLElements aggregators.
@@ -242,7 +247,9 @@ class Aggregators(Associations):
                     results.append(inheritor)
         return results
 
+
 UNSET = object()
+
 
 class TaggedValues(object):
     """Adapter to get information about an UMLElements TaggedValues.
