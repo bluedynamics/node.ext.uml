@@ -33,10 +33,10 @@ class IUMLElement(INode):
     """
     XMI = Attribute(u"the current IXMIFlavor instance")
     xmiid = Attribute(u"XMI identifier as string")
+    xminame=Attribute(u"XMI name, should be used as canonical name for code generation")
     normalizedname = Attribute(u"Cleaned name of UML element name consists "
                                 "of [a..z A..Z 0..9 _] and does not start with "
                                 "[0..9].")
-    name = Attribute(u"The name under which the Element is known")
     maxoccurs = Attribute(u"UML: maximum occurencies. integer expected.")
     iscomplex = Attribute(u"UML: complex or not. boolean expected")
 

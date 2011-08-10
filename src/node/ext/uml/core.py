@@ -38,6 +38,7 @@ class UMLElement(OrderedNode):
     abstract = True
     xmiid = None
     XMI = None
+    xminame=None
 
     def __call__(self):
         """Does nothing but fullfill contract.
