@@ -636,5 +636,18 @@ Namespaced access walks up the UML namespace hierarchy.
   ['value one on class C2', 'value one on package', 'value one on model']
 
 
+Dependencies
+------------
+
+TODO/ Nice to have
+
+>> deputil = Dependencies(someumlelement)
+>> dep.incoming
+[Dep1, Dep3]
+
+>> dep.outgoing
+[Dep2, Dep4]
+
+
     
     
