@@ -133,6 +133,7 @@ class Association(UMLElement):
         super(Association, self).__init__(name)
         self._memberEnds = list()
 
+    # XXX: looks like storing a reference directly would do the job
     def _getmemberEnds(self):
         return [self.node(uuid) for uuid in self._memberEnds]
 
@@ -143,7 +144,7 @@ class Association(UMLElement):
 
     @property
     def ownedEnds(self):
-        return self.filtereditervalues(IAssociationEnd)
+        return [_ for _ in self.filtereditervalues(IAssociationEnd)]
 
 
 class AssociationEnd(UMLElement):
