@@ -3,7 +3,7 @@ from zope.interface import implements
 from node.base import OrderedNode
 from node.interfaces import (
     IRoot,
-    ICallableNode,
+    ICallable,
 )
 from node.parts import (
     Reference,
@@ -33,7 +33,7 @@ INFINITE = object()
 class UMLElement(OrderedNode):
     __metaclass__ = plumber
     __plumbing__ = Reference, Order
-    implements(IUMLElement, ICallableNode)
+    implements(IUMLElement, ICallable)
 
     abstract = True
     xmiid = None
