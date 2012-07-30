@@ -5,7 +5,7 @@ from node.interfaces import (
     IRoot,
     ICallable,
 )
-from node.parts import (
+from node.behaviors import (
     Reference,
     Order,
 )
