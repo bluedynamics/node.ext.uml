@@ -19,17 +19,13 @@ TESTFILES = [
 ]
 
 
-datadir = os.path.join(os.path.dirname(__file__), '..', '_api', 'data')
-
-
 def test_suite():
     return unittest.TestSuite([
         doctest.DocFileSuite(
             file,
             optionflags=optionflags,
             globs={'interact': interact,
-                   'pprint': pprint,
-                   'datadir': datadir,},
+                   'pprint': pprint,},
         ) for file in TESTFILES
     ])
 
