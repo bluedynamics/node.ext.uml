@@ -3,8 +3,8 @@ UML Core Elements
 
 Model Root
 ----------
-::
 
+::
     >>> from node.ext.uml.core import Model
     >>> model = Model('testmodel')
     >>> model
@@ -12,8 +12,8 @@ Model Root
     
 Package
 -------
-::
-    
+
+:: 
     >>> from node.ext.uml.core import Package
     >>> model['mypackage'] = Package()
     >>> model['mypackage']
@@ -25,6 +25,8 @@ Package
 
 Querying the Package
 --------------------
+
+::
     >>> from node.ext.uml.classes import Class
     >>> from node.ext.uml.classes import Interface
     >>> model['package2'] = Package()
@@ -50,16 +52,16 @@ Querying the Package
 
 Adding Profile to model
 -----------------------
-::
 
+::
     >>> from node.ext.uml.core import Profile
     >>> model['mypackage']['myprofile'] = Profile()
 
 
 Adding Stereotype
 -----------------
-::
 
+::
     >>> from node.ext.uml.core import Stereotype
     >>> model['mypackage']['mystereotype'] = Stereotype()
     >>> model['mypackage']['mystereotype'].profile = \
@@ -70,8 +72,8 @@ Adding Stereotype
     
 Adding TaggedValue to Stereotype
 --------------------------------
-::
 
+::
     >>> from node.ext.uml.core import TaggedValue
     >>> model['mypackage']['mystereotype']['mytgv'] = TaggedValue()
     >>> model['mypackage']['mystereotype']['mytgv'].value = 'hurray'

@@ -1,5 +1,5 @@
 node.ext.uml activities.py test
-=====================================
+===============================
 
 Start this test like so:
 ./bin/test -s node.ext.uml -t activities.txt
@@ -13,8 +13,8 @@ We cannot instantiate abstract base classes
     ModelIllFormedException: <Behavior...> Cannot directly use abstract base classes
 
 Import the model.
-If you want to know how to create a model, look into tests/env.py
-    >>> from node.ext.uml.tests.env import model
+If you want to know how to create a model, look into testing/env.py
+    >>> from node.ext.uml.testing.env import model
 
 Validate the model
     >>> from node.ext.uml.activities import validate

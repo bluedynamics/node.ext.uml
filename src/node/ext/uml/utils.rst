@@ -18,8 +18,7 @@ general elements. Our example tree looks like::
                  \    /   
                    C6
 
-So, first we build it.
-::        
+So, first we build it::        
                    
     >>> from node.ext.uml.core import Model
     >>> from node.ext.uml.classes import Class, Generalization
@@ -53,8 +52,7 @@ So, first we build it.
         <class 'node.ext.uml.classes.Generalization'>: g1
         <class 'node.ext.uml.classes.Generalization'>: g2
 
-Lets see how the inheritance tree looks like.
-::
+Lets see how the inheritance tree looks like::
 
     >>> from node.ext.uml.utils import Inheritance
     >>> inheritance = Inheritance(m['C6'])
@@ -67,8 +65,8 @@ Lets see how the inheritance tree looks like.
         <class 'node.ext.uml.utils.Inheritance'>: ... on C4    
           <class 'node.ext.uml.utils.Inheritance'>: ... on C1
           
-We can look at it flattened, we get a Set - but here we order a list.
-::
+We can look at it flattened, we get a Set - but here we order a list::
+
     >>> all = list(inheritance.all)
     >>> print [n.noderepr for n in sorted(all, 
     ...                                   key=lambda obj: obj.context.__name__)]
@@ -89,15 +87,15 @@ To be sure we call this on a subpart of the tree::
     "<class 'node.ext.uml.utils.Inheritance'>: ... on C3", 
     "<class 'node.ext.uml.utils.Inheritance'>: ... on C4", 
     "<class 'node.ext.uml.utils.Inheritance'>: ... on C5"]        
-    
+
+
 Inheritors adapter
-------------------    
-    
+------------------
+
 The `Inheritors adapter` answers the question "Who inherits from me?". It does
 not return a tree, just a list of UMLElements on method call.
 We take the same setup  as in the section `Inheritance`. In the simplest case 
-we want all inheritors of C2, which will return C6.
-::
+we want all inheritors of C2, which will return C6::
 
     >>> from node.ext.uml.utils import Inheritors
     >>> i = Inheritors(m['C2'])
@@ -130,15 +128,14 @@ As direct inheritors we expect C3 and C4::
 
     >>> sorted(i.all, key=lambda obj: obj.__name__)
     [<Class object 'C3' at ...>, <Class object 'C4' at ...>]
-   
-    
+
+
 Assosiation adapters
 --------------------
 
 Assosiations can stick direct on a class or are inherited, which means class C3
 inherits from class C1. Class C3 has an association `b` to class C4. Class C1 
-has an association `a` to class C2.
-::
+has an association `a` to class C2::
 
     C1 ---a---> C2 
      A
@@ -172,23 +169,20 @@ First set up the scenario::
     >>> m['b']['c4'] = AssociationEnd()
     >>> m['b']['c4'].association = m['b']
     >>> m['b']['c4'].type = m['C4']
-  
-    
-We want to find the association `b` with the direct property.
-::
+   
+We want to find the association `b` with the direct property::
+
     >>> from node.ext.uml.utils import Associations
     >>> a = Associations(m['C3'])
     >>> a.direct
     [<AssociationEnd object 'c3' at ...>]
     
-We want to find the inherited association `a` with the inherited property.
-::
+We want to find the inherited association `a` with the inherited property::
 
     >>> a.inherited
     [<AssociationEnd object 'c1' at ...>]
 
-We want to find the all association `a`, `b` with the all property.
-::
+We want to find the all association `a`, `b` with the all property::
 
     >>> sorted(a.all, key=lambda obj: obj.__name__) 
     [<AssociationEnd object 'c1' at ...>, <AssociationEnd object 'c3' at ...>]
@@ -200,8 +194,7 @@ Aggregations are association which has one end marked with an aggregationkind.
 Lets assume a model where we have class C1 composite aggregating class C2.
 Class C3 shared aggregates class C4, class C4 composite aggregates class C5.
 class C3 inherits from class C1. We have also a normal association from C3 to 
-C6.
-::
+C6::
 
           C1<.>--a-----C2
           A
@@ -276,8 +269,7 @@ We may have Associations defined via interfaces the class realizes. We assume
 an interface I2 which inherits from interface I1. Class C3 realizes the 
 interface I2. class C1 has a shared aggregation to I1. I1 has an composite 
 aggregation to C5. Class C2 has a composite aggregation to interface I2. Also 
-C4 has an composite aggregation to C4. Class C6 inherits from C3.  
-::
+C4 has an composite aggregation to C4. Class C6 inherits from C3::
  
         C1 < >--a-- I1 <.>--d-- C5
                      A
@@ -289,7 +281,7 @@ C4 has an composite aggregation to C4. Class C6 inherits from C3.
                      A
                      |
                     C6                     
-                    
+             
 Set up the scenario::
 
     >>> from node.ext.uml.classes import Interface
@@ -337,7 +329,7 @@ Set up the scenario::
     >>> m['d']['c5'] = AssociationEnd()
     >>> m['d']['c5'].association = m['d']
     >>> m['d']['c5'].type = m['C5']
-    
+
 We can fetch from C3 only the ones coming over realization::
 
     >>> a = Associations(m['C3'])
@@ -375,7 +367,7 @@ For direct its empty::
     >>> sorted(a.all, key=lambda obj: obj.__name__) 
     [<AssociationEnd object 'c3' at ...>, <AssociationEnd object 'i1a' at ...>, 
     <AssociationEnd object 'i1d' at ...>, <AssociationEnd object 'i2' at ...>]
-     
+
     
 Aggregators
 -----------
@@ -383,8 +375,7 @@ Aggregators
 Suppose class C2 has some aggregation to C1, class C4 has some aggregations to 
 class C3, class C7 has some aggregation to class C6 and class C7 has some 
 self-aggregation. Class C3 inherits from class C1 and class C3 inherits from C2.
-Class C6 inherits from class C3 and class C5 inherits from class C4.     
-::
+Class C6 inherits from class C3 and class C5 inherits from class C4::
   
     C1 ---a---<> C2
      A           A        
@@ -400,7 +391,6 @@ Class C6 inherits from class C3 and class C5 inherits from class C4.
      |
     C6 ---c---<> C7<>-.
                   |_d_|
-                  
 
 Setup the scenario::
 
@@ -480,8 +470,7 @@ inherits from C4. Furthermore it can be contained in C2, because C2 is an
 aggregator of C1 and C3 inherits from C1. Then C3 can contain itself, since it 
 inherits from C2 which can contain C1 and as said C3 inherits from C1. Last C3
 can contain C6, because C6 inherits from C3. In other words we expect as the 
-result: C1, C2, C3, C4, C5, C6
-::
+result: C1, C2, C3, C4, C5, C6::
 
     >>> a = Aggregators(m['C3'])
     >>> sorted(a.allparticipants, key=lambda obj: obj.__name__)
@@ -545,8 +534,7 @@ has <<sA>> applied and ``tgv1`` et. Model contains a package `p` with
 ``<<sA>>/tgv1`` and ``<<sBA>>/tgv2`` set. Inside the package we have two 
 classes ``C1`` and ``C2``. ``C2`` inherits from ``C1``. On ````C1``  both, 
 ``<<sA>>/tgv1`` and ``<<sBA>>/tgv2`, are set. On ``C2`` ``<<sA>>/tgv1`` is set.
-All values are different.
-::
+All values are different::
 
     model <<sA>>: tgv1='value one on model'      
      ________________________________________
@@ -558,9 +546,7 @@ All values are different.
     |     A <<sB>>: tgv2='value two on class C2'  |
     |     |                                       |
     |    C2 <<sA>>: tgv1='value one on class C2'  |
-    |_____________________________________________|
-    
-::    
+    |_____________________________________________| 
      
     >>> from node.ext.uml.core import Package
     >>> from node.ext.uml.core import Stereotype
@@ -590,8 +576,7 @@ All values are different.
     >>> m['p']['C2']['sA']['tgv1'] = TaggedValue()
     >>> m['p']['C2']['sA']['tgv1'].value = 'value one on class C2'
      
-Direct access simply returns values on the class.
-::  
+Direct access simply returns values on the class::  
  
     >>> from node.ext.uml.utils import TaggedValues
     >>> tgv = TaggedValues(m['p']['C2'])
@@ -608,8 +593,7 @@ Direct access simply returns values on the class.
     >>> tgv.direct('NotExistent:tgv999') is UNSET
     True
     
-Inherited access works as well.
-::    
+Inherited access works as well::    
     
     >>> tgv.inherited('tgv1', 'sA')
     ['value one on class C2', 'value one on class C1']
@@ -629,11 +613,10 @@ Inherited access works as well.
     >>> tgv.inherited('tgv1', 'sA', alternatives=['sB:tgv2',])
     ['value one on class C2', 'value one on class C1', 'value two on class C1']
 
-Namespaced access walks up the UML namespace hierarchy.
-::
+Namespaced access walks up the UML namespace hierarchy::
 
-  >>> tgv.namespaced('tgv1', 'sA')
-  ['value one on class C2', 'value one on package', 'value one on model']
+    >>> tgv.namespaced('tgv1', 'sA')
+    ['value one on class C2', 'value one on package', 'value one on model']
 
 
 Dependencies
@@ -647,7 +630,3 @@ TODO/ Nice to have
 
 >> dep.outgoing
 [Dep2, Dep4]
-
-
-    
-    
