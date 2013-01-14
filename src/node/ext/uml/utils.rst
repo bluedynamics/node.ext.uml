@@ -1,6 +1,7 @@
 UML Convinience Utilities
 =========================
 
+
 Inheritance adapter
 -------------------
 
@@ -19,7 +20,7 @@ general elements. Our example tree looks like::
                    C6
 
 So, first we build it::        
-                   
+
     >>> from node.ext.uml.core import Model
     >>> from node.ext.uml.classes import Class, Generalization
     >>> m = Model('model')
@@ -64,7 +65,7 @@ Lets see how the inheritance tree looks like::
           <class 'node.ext.uml.utils.Inheritance'>: ... on C1
         <class 'node.ext.uml.utils.Inheritance'>: ... on C4    
           <class 'node.ext.uml.utils.Inheritance'>: ... on C1
-          
+
 We can look at it flattened, we get a Set - but here we order a list::
 
     >>> all = list(inheritance.all)
@@ -76,7 +77,7 @@ We can look at it flattened, we get a Set - but here we order a list::
     "<class 'node.ext.uml.utils.Inheritance'>: ... on C4", 
     "<class 'node.ext.uml.utils.Inheritance'>: ... on C5", 
     "<class 'node.ext.uml.utils.Inheritance'>: ... on C6"]        
-    
+
 To be sure we call this on a subpart of the tree::
 
     >>> sub = Inheritance(m['C5'])  
@@ -104,13 +105,13 @@ we want all inheritors of C2, which will return C6::
 
     >>> i.all
     [<Class object 'C6' at ...>]
- 
+
 For C3 we expect C5 and C6::  
 
     >>> i = Inheritors(m['C3'])
     >>> sorted(i.all, key=lambda obj: obj.__name__)
     [<Class object 'C5' at ...>, <Class object 'C6' at ...>]
-    
+
 But not for direct inheritors, here C5 is the expected result::    
 
     >>> i.direct
@@ -118,12 +119,12 @@ But not for direct inheritors, here C5 is the expected result::
 
 Class C1 at the top of the diamond style inheritance must return C3 C4, C5 and 
 C6::
-   
+
     >>> i = Inheritors(m['C1'])
     >>> sorted(i.all, key=lambda obj: obj.__name__)
     [<Class object 'C3' at ...>, <Class object 'C4' at ...>,
     <Class object 'C5' at ...>, <Class object 'C6' at ...>]
-    
+
 As direct inheritors we expect C3 and C4:: 
 
     >>> sorted(i.all, key=lambda obj: obj.__name__)
@@ -169,14 +170,14 @@ First set up the scenario::
     >>> m['b']['c4'] = AssociationEnd()
     >>> m['b']['c4'].association = m['b']
     >>> m['b']['c4'].type = m['C4']
-   
+
 We want to find the association `b` with the direct property::
 
     >>> from node.ext.uml.utils import Associations
     >>> a = Associations(m['C3'])
     >>> a.direct
     [<AssociationEnd object 'c3' at ...>]
-    
+
 We want to find the inherited association `a` with the inherited property::
 
     >>> a.inherited
@@ -186,6 +187,7 @@ We want to find the all association `a`, `b` with the all property::
 
     >>> sorted(a.all, key=lambda obj: obj.__name__) 
     [<AssociationEnd object 'c1' at ...>, <AssociationEnd object 'c3' at ...>]
+
 
 Aggregations Adapters
 ---------------------
@@ -202,7 +204,7 @@ C6::
           | ------d--->C6         
           |/
           C3< >---b----C4<.>---c---C5
-          
+
 First set up the scenario::
 
     >>> m = Model('model')
@@ -250,7 +252,7 @@ this scenario::
     >>> sorted(a.all, key=lambda obj: obj.__name__) 
     [<AssociationEnd object 'c1' at ...>, <AssociationEnd object 'c3' at ...>, 
     <AssociationEnd object 'c3d' at ...>]
-    
+
 With the aggregation-adapter we get only aggregations::
 
     >>> from node.ext.uml.utils import Aggregations
@@ -261,10 +263,11 @@ With the aggregation-adapter we get only aggregations::
     >>> a = Aggregations(m['C4'])
     >>> sorted(a.all, key=lambda obj: obj.__name__) 
     [<AssociationEnd object 'c4c' at ...>]
-    
+
+
 Associations over InterfaceRealizations
 ---------------------------------------
-    
+
 We may have Associations defined via interfaces the class realizes. We assume
 an interface I2 which inherits from interface I1. Class C3 realizes the 
 interface I2. class C1 has a shared aggregation to I1. I1 has an composite 
@@ -281,7 +284,7 @@ C4 has an composite aggregation to C4. Class C6 inherits from C3::
                      A
                      |
                     C6                     
-             
+
 Set up the scenario::
 
     >>> from node.ext.uml.classes import Interface
@@ -336,7 +339,7 @@ We can fetch from C3 only the ones coming over realization::
     >>> sorted(a.directlyrealized, key=lambda obj: obj.__name__)
     [<AssociationEnd object 'i1a' at ...>, <AssociationEnd object 'i1d' at ...>, 
     <AssociationEnd object 'i2' at ...>]
-    
+
 Now check if `direct` is returning what we expect::
 
     >>> sorted(a.direct, key=lambda obj: obj.__name__)
@@ -347,7 +350,7 @@ If we ask C3 for all associations we have to see a whole bunch::
     >>> sorted(a.all, key=lambda obj: obj.__name__) 
     [<AssociationEnd object 'c3' at ...>, <AssociationEnd object 'i1a' at ...>, 
     <AssociationEnd object 'i1d' at ...>, <AssociationEnd object 'i2' at ...>]
-    
+
 We expect C6 to return on all the same as C3, because it inherits all from C3.
 For direct its empty::
 
@@ -363,12 +366,11 @@ For direct its empty::
     [<AssociationEnd object 'i1a' at ...>, <AssociationEnd object 'i1d' at ...>, 
     <AssociationEnd object 'i2' at ...>]
 
-
     >>> sorted(a.all, key=lambda obj: obj.__name__) 
     [<AssociationEnd object 'c3' at ...>, <AssociationEnd object 'i1a' at ...>, 
     <AssociationEnd object 'i1d' at ...>, <AssociationEnd object 'i2' at ...>]
 
-    
+
 Aggregators
 -----------
 
@@ -376,7 +378,7 @@ Suppose class C2 has some aggregation to C1, class C4 has some aggregations to
 class C3, class C7 has some aggregation to class C6 and class C7 has some 
 self-aggregation. Class C3 inherits from class C1 and class C3 inherits from C2.
 Class C6 inherits from class C3 and class C5 inherits from class C4::
-  
+
     C1 ---a---<> C2
      A           A        
      |         /
@@ -449,10 +451,10 @@ First the simplest for C1::
 
     >>> a.inherited
     []
-   
+
     >>> a.all
     [<AssociationEnd object 'c2' at ...>]
-    
+
 Now we look at the self-aggregation on C7::    
 
     >>> a = Aggregators(m['C7'])
@@ -461,7 +463,7 @@ Now we look at the self-aggregation on C7::
 
     >>> a.inherited
     []
-   
+
     >>> a.all
     [<AssociationEnd object 'c7d2' at ...>]
 
@@ -477,7 +479,7 @@ result: C1, C2, C3, C4, C5, C6::
     [<Class object 'C2' at ...>, <Class object 'C3' at ...>, 
     <Class object 'C4' at ...>, <Class object 'C5' at ...>, 
     <Class object 'C6' at ...>]
-    
+
 Now lets take InterfaceRealizations into account. Assume a model, where class
 C1 aggregates an Interface I1. Class C2 realizes the interface I1. Class C3
 inherits from class C2::
@@ -489,7 +491,7 @@ inherits from class C2::
                   A
                   |
                  C3
-                 
+
 Setup our scenario::
 
     >>> m = Model('model')
@@ -508,13 +510,13 @@ Setup our scenario::
     >>> m['a']['i1'] = AssociationEnd()
     >>> m['a']['i1'].association = m['a']
     >>> m['a']['i1'].type = m['I1']                                   
-                 
+
 If we now ask C2 for its aggregators we expect C1 to appear::
 
     >>> a = Aggregators(m['C2'])
     >>> a.all
     [<AssociationEnd object 'c1' at ...>]
-    
+
     >>> a.allparticipants    
     [<Class object 'C1' at ...>]
 
@@ -524,7 +526,7 @@ We expect for class C3 the same::
     >>> a.allparticipants    
     [<Class object 'C1' at ...>]
  
- 
+
 Tagged Value Convinience
 ------------------------
 
@@ -537,7 +539,7 @@ classes ``C1`` and ``C2``. ``C2`` inherits from ``C1``. On ````C1``  both,
 All values are different::
 
     model <<sA>>: tgv1='value one on model'      
-     ________________________________________
+
     | p <<sA>>: tgv1='value one on package'  |
     |   <<sB>>: tgv2='value two on package'  |
     |---------------------------------------------
@@ -547,7 +549,7 @@ All values are different::
     |     |                                       |
     |    C2 <<sA>>: tgv1='value one on class C2'  |
     |_____________________________________________| 
-     
+
     >>> from node.ext.uml.core import Package
     >>> from node.ext.uml.core import Stereotype
     >>> from node.ext.uml.core import TaggedValue
@@ -575,14 +577,14 @@ All values are different::
     >>> m['p']['C2']['sA'] = Stereotype()
     >>> m['p']['C2']['sA']['tgv1'] = TaggedValue()
     >>> m['p']['C2']['sA']['tgv1'].value = 'value one on class C2'
-     
+
 Direct access simply returns values on the class::  
- 
+
     >>> from node.ext.uml.utils import TaggedValues
     >>> tgv = TaggedValues(m['p']['C2'])
     >>> tgv.direct('tgv1', 'sA')
     'value one on class C2'
- 
+
     >>> tgv.direct('sA:tgv1')
     'value one on class C2'
 
@@ -592,9 +594,9 @@ Direct access simply returns values on the class::
 
     >>> tgv.direct('NotExistent:tgv999') is UNSET
     True
-    
+
 Inherited access works as well::    
-    
+
     >>> tgv.inherited('tgv1', 'sA')
     ['value one on class C2', 'value one on class C1']
 
@@ -609,7 +611,7 @@ Inherited access works as well::
 
     >>> tgv.inherited('tgv2', 'sB', alternatives=[('tgv1', 'sA')])
     ['value one on class C2', 'value two on class C1', 'value one on class C1']
- 
+
     >>> tgv.inherited('tgv1', 'sA', alternatives=['sB:tgv2',])
     ['value one on class C2', 'value one on class C1', 'value two on class C1']
 

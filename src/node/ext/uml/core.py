@@ -1,5 +1,6 @@
+import logging
 from plumber import plumber
-from zope.interface import implements
+from zope.interface import implementer
 from node.base import OrderedNode
 from node.interfaces import (
     IRoot,
@@ -23,18 +24,18 @@ from node.ext.uml.interfaces import (
     IActivity,
 )
 
-import logging
+
 log = logging.getLogger('node.ext.uml')
+
 
 NODEFAULTMARKER = object()
 INFINITE = object()
 
 
+@implementer(IUMLElement, ICallable)
 class UMLElement(OrderedNode):
     __metaclass__ = plumber
     __plumbing__ = Reference, Order
-    implements(IUMLElement, ICallable)
-
     abstract = True
     xmiid = None
     XMI = None
@@ -78,8 +79,8 @@ class UMLElement(OrderedNode):
                   "Cannot directly use abstract base classes"
 
 
+@implementer(IProfile)
 class Profile(UMLElement):
-    implements(IProfile)
     abstract = False
 
     # TODO: check these TODO items if they still apply
@@ -101,8 +102,8 @@ class Profile(UMLElement):
     # profiles and profiles other ones.
 
 
+@implementer(IStereotype)
 class Stereotype(UMLElement):
-    implements(IStereotype)
     abstract = False
 
     def __init__(self, name=None):
@@ -138,19 +139,19 @@ class Stereotype(UMLElement):
                   u"Stereotype must have a reference to its Profile"
 
 
+@implementer(ITaggedValue)
 class TaggedValue(UMLElement):
-    implements(ITaggedValue)
     abstract = False
-
     value = None
 
 
+@implementer(IDatatype)
 class Datatype(UMLElement):
-    implements(IDatatype)
+    pass
 
 
+@implementer(IPackage)
 class Package(UMLElement):
-    implements(IPackage)
     abstract = False
 
     @property
@@ -174,8 +175,8 @@ class Package(UMLElement):
         return self.filtereditervalues(IActivity)
 
 
+@implementer(IModel, IRoot)
 class Model(Package):
-    implements(IModel, IRoot)
     abstract = False
 
     @property

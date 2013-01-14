@@ -50,6 +50,7 @@ class Inheritance(OrderedNode):
     def noderepr(self):
         return '%s on %s' % (super(Inheritance, self).noderepr,
                              self.context.__name__)
+
     @property
     def all(self):
         """flattend (list) from the traversed tree of more general

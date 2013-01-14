@@ -1,10 +1,11 @@
 node.ext.uml activities.py test
 ===============================
 
-Start this test like so:
-./bin/test -s node.ext.uml -t activities.txt
+Start this test like so::
+    ./bin/test -s node.ext.uml -t activities.rst
 
-We cannot instantiate abstract base classes
+We cannot instantiate abstract base classes::
+
     >>> from node.ext.uml.activities import Behavior
     >>> behavior = Behavior()
     >>> behavior.check_model_constraints()
@@ -13,14 +14,18 @@ We cannot instantiate abstract base classes
     ModelIllFormedException: <Behavior...> Cannot directly use abstract base classes
 
 Import the model.
-If you want to know how to create a model, look into testing/env.py
+
+If you want to know how to create a model, look into testing/env.py::
+
     >>> from node.ext.uml.testing.env import model
 
-Validate the model
+Validate the model::
+
     >>> from node.ext.uml.activities import validate
     >>> validate(model)
 
-Test if the model provides us with all the elements and methods we expect...
+Test if the model provides us with all the elements and methods we expect...::
+
     >>> model
     <Package object 'testmodel'...>
     >>> list(model.activities)
@@ -79,12 +84,11 @@ Test if the model provides us with all the elements and methods we expect...
     >>> act['8'].guard
     'else'
 
+Test finding node per xmiid::
 
-Test finding node per xmiid
     >>> act['8'].xmiid = "abcd"
     >>> from node.ext.uml.activities import get_element_by_xmiid
     >>> act['8'] == get_element_by_xmiid(model, "abcd")
     True
 
     # >>> interact( locals() )
-

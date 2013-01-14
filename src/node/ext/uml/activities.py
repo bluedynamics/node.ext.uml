@@ -1,34 +1,33 @@
-from zope.interface import implements
-from node.ext.uml.interfaces import ModelIllFormedException
-
-from node.ext.uml.interfaces import IUMLElement
-
+from zope.interface import implementer
+from node.ext.uml.interfaces import (
+    ModelIllFormedException,
+    IPackage,
+    IUMLElement,
+    IAction,
+    IActivity,
+    IActivityEdge,
+    IActivityFinalNode,
+    IActivityNode,
+    IBehavior,
+    IConstraint,
+    IControlNode,
+    IDecisionNode,
+    IFinalNode,
+    IFlowFinalNode,
+    IForkNode,
+    IInitialNode,
+    IJoinNode,
+    IMergeNode,
+    IOpaqueAction,
+    IPreConstraint,
+    IPostConstraint,
+    
+)
 from node.ext.uml.core import UMLElement
 
-from node.ext.uml.interfaces import IAction
-from node.ext.uml.interfaces import IActivity
-from node.ext.uml.interfaces import IActivityEdge
-from node.ext.uml.interfaces import IActivityFinalNode
-from node.ext.uml.interfaces import IActivityNode
-from node.ext.uml.interfaces import IBehavior
-from node.ext.uml.interfaces import IConstraint
-from node.ext.uml.interfaces import IControlNode
-from node.ext.uml.interfaces import IDecisionNode
-from node.ext.uml.interfaces import IFinalNode
-from node.ext.uml.interfaces import IFlowFinalNode
-from node.ext.uml.interfaces import IForkNode
-from node.ext.uml.interfaces import IInitialNode
-from node.ext.uml.interfaces import IJoinNode
-from node.ext.uml.interfaces import IMergeNode
-from node.ext.uml.interfaces import IOpaqueAction
-from node.ext.uml.interfaces import IPreConstraint
-from node.ext.uml.interfaces import IPostConstraint
 
-from node.ext.uml.interfaces import IPackage
-
-
+@implementer(IActivityNode)
 class ActivityNode(UMLElement):
-    implements(IActivityNode)
 
     def check_model_constraints(self):
         super(ActivityNode, self).check_model_constraints()
@@ -59,8 +58,8 @@ class ActivityNode(UMLElement):
                 yield obj
 
 
+@implementer(IAction)
 class Action(ActivityNode):
-    implements(IAction)
 
     # TODO: leave or remove?
     @property
@@ -76,8 +75,8 @@ class Action(ActivityNode):
         return self.filtereditervalues(IPostConstraint)
 
 
+@implementer(IBehavior)
 class Behavior(UMLElement):
-    implements(IBehavior)
 
     def __init__(self, name=None, context=None):
         self.context = context
@@ -92,11 +91,13 @@ class Behavior(UMLElement):
         return self.filtereditervalues(IPostConstraint)
 
 
+@implementer(IControlNode)
 class ControlNode(ActivityNode):
-    implements(IControlNode)
+    pass
 
+
+@implementer(IFinalNode)
 class FinalNode(ControlNode):
-    implements(IFinalNode)
 
     def check_model_constraints(self):
         super(FinalNode, self).check_model_constraints()
@@ -107,9 +108,14 @@ class FinalNode(ControlNode):
                   str(self) +  " " +\
                   u"FinalNode cannot have outgoing edges"
 
-### CONCRETE CLASSES
+
+###############################################################################
+# CONCRETE CLASSES
+###############################################################################
+
+
+@implementer(IActivity)
 class Activity(Behavior):
-    implements(IActivity)
     abstract = False
 
     def check_model_constraints(self):
@@ -139,13 +145,13 @@ class Activity(Behavior):
         return self.filtereditervalues(IAction)
 
 
+@implementer(IOpaqueAction)
 class OpaqueAction(Action):
-    implements(IOpaqueAction)
     abstract = False
 
 
+@implementer(IActivityEdge)
 class ActivityEdge(UMLElement):
-    implements(IActivityEdge)
     abstract = False
 
     def check_model_constraints(self):
@@ -156,7 +162,6 @@ class ActivityEdge(UMLElement):
             raise ModelIllFormedException,\
                   str(self) +  " " +\
                   "An ActivityEdge must have source and target set"
-
         # [1]
         try:
             assert self.source.activity is self.target.activity
@@ -164,7 +169,6 @@ class ActivityEdge(UMLElement):
             raise ModelIllFormedException,\
                   str(self) +  " " +\
                   "Source and target must be in the same activity"
-
         # [2]
         try:
             assert self.__parent__ is not None
@@ -173,14 +177,12 @@ class ActivityEdge(UMLElement):
             raise ModelIllFormedException,\
                   str(self) +  " " +\
                   "An ActivityEdge must have an Activity as parent"
-
         try:
             assert IActivityNode.providedBy(self.source)
         except AssertionError:
             raise ModelIllFormedException,\
                   str(self) +  " " +\
                   "An ActivityEdge must have an ActivityNode as source"
-
         try:
             assert IActivityNode.providedBy(self.target)
         except AssertionError:
@@ -206,22 +208,30 @@ class ActivityEdge(UMLElement):
 
     def get_source(self):
         return self.node(self.source_uuid)
+
     def set_source(self, source):
         # TODO: invalidate cache key for target's outgoingEdges method
         self.source_uuid = source.uuid
+
     source = property(get_source, set_source)
 
     def get_target(self):
         return self.node(self.target_uuid)
+
     def set_target(self, target):
         # TODO: invalidate cache key for target's incomingEdges method
         self.target_uuid = target.uuid
+
     target = property(get_target, set_target)
 
 
-### Initial and final
+##############################################################################
+# Initial and final
+##############################################################################
+
+
+@implementer(IInitialNode)
 class InitialNode(ControlNode):
-    implements(IInitialNode)
     abstract = False
 
     def check_model_constraints(self):
@@ -234,17 +244,24 @@ class InitialNode(ControlNode):
                   str(self) +  " " +\
                   u"InitialNode cannot have incoming edges"
 
+
+@implementer(IActivityFinalNode)
 class ActivityFinalNode(FinalNode):
-    implements(IActivityFinalNode)
     abstract = False
 
+
+@implementer(IFlowFinalNode)
 class FlowFinalNode(FinalNode):
-    implements(IFlowFinalNode)
     abstract = False
 
-### More control nodes
+
+###############################################################################
+# More control nodes
+###############################################################################
+
+
+@implementer(IDecisionNode)
 class DecisionNode(ControlNode):
-    implements(IDecisionNode)
     abstract = False
 
     def check_model_constraints(self):
@@ -260,8 +277,8 @@ class DecisionNode(ControlNode):
                   "one outgoing edge."
 
 
+@implementer(IForkNode)
 class ForkNode(ControlNode):
-    implements(IForkNode)
     abstract = False
 
     def check_model_constraints(self):
@@ -277,8 +294,8 @@ class ForkNode(ControlNode):
                   "one outgoing edge."
 
 
+@implementer(IJoinNode)
 class JoinNode(ControlNode):
-    implements(IJoinNode)
     abstract = False
 
     def check_model_constraints(self):
@@ -297,8 +314,8 @@ class JoinNode(ControlNode):
 # TODO: UML2's MergeNode behavior does not reduce concurrency
 # here the concurrency is reduced if 2 tokens come into the node
 # at a time. THIS SHOULD BE CHANGED...
+@implementer(IMergeNode)
 class MergeNode(ControlNode):
-    implements(IMergeNode)
     abstract = False
 
     def check_model_constraints(self):
@@ -314,9 +331,13 @@ class MergeNode(ControlNode):
                   u"one incoming edge."
 
 
-### Constraints
+###############################################################################
+# Constraints
+###############################################################################
+
+
+@implementer(IConstraint)
 class Constraint(UMLElement):
-    implements(IConstraint)
     abstract = False
 
     def __init__(self, name=None, specification=None):
@@ -327,12 +348,14 @@ class Constraint(UMLElement):
     def constrained_element(self):
         return self.__parent__
 
+
+@implementer(IPreConstraint)
 class PreConstraint(Constraint):
-    implements(IPreConstraint)
     abstract = False
 
+
+@implementer(IPostConstraint)
 class PostConstraint(Constraint):
-    implements(IPostConstraint)
     abstract = False
 
 
@@ -343,6 +366,7 @@ def validate(node):
         node.check_model_constraints()
     for sub in node.filtereditervalues(IUMLElement):
         validate(sub)
+
 
 def get_element_by_xmiid(node, xmiid):
     if node.xmiid == xmiid:

@@ -6,11 +6,12 @@ James Rumbaugh, Ivar Jacobson, Grady Booch. Addison-Wesley, 2005
 
 [3] Unified Modeling Language Specification (version 2.1)
 """
-
 from zope.interface import Attribute
-from node.interfaces import INode
-from node.interfaces import ILeaf
-from node.interfaces import IRoot
+from node.interfaces import (
+    INode,
+    ILeaf,
+    IRoot,
+)
 
 
 class UMLException(Exception):
@@ -39,7 +40,6 @@ class IUMLElement(INode):
                                 "[0..9].")
     maxoccurs = Attribute(u"UML: maximum occurencies. integer expected.")
     iscomplex = Attribute(u"UML: complex or not. boolean expected")
-
     # convenience
     stereotypes = Attribute(u'list of INode filtered contained stereotypes')
 
@@ -98,7 +98,6 @@ class IStereotype(IUMLElement):
 class ITaggedValue(IUMLElement, ILeaf):
     """UML tagged value.
     """
-
     value = Attribute(u"The value")
 
 
@@ -111,7 +110,6 @@ class IPackage(IUMLElement):
     """An UML Package element.
     """
     profiles = Attribute(u"list of UML profiles loaded with this package")
-
     # convenience
     packages = Attribute(u'list of INode filtered contained packages')
     classes = Attribute(u'list of INode filtered contained classes')
@@ -236,12 +234,10 @@ class IAssociation(IUMLElement):
     It can be member of a classifier or part of a package, dependend on its
     usage.
     """
-
     memberEnds = Attribute(u"Each end represents participation of instances of "
                             "the classifier connected to the end in links of "
                             "the association. This is an ordered association. "
                             "Subsets Namespace::member.")
-
     ownedEnds = Attribute(u"The ends that are owned by the association itself. "
                            "This is an ordered association. Subsets"
                            "Association::memberEnd Classifier::feature, and"
@@ -250,15 +246,10 @@ class IAssociation(IUMLElement):
 
 class IAssociationEnd(IUMLElement):
     """OwnedElement of Associations or Classes."""
-
     type = Attribute(u'Element this end points to.')
-
     lowervalue = Attribute(u'Multiplicity lower range')
-
     uppervalue = Attribute(u'Multiplicity upper range')
-
     navigable = Attribute(u'Indicates wether the end is navigable or not, bool')
-
     aggregationkind = Attribute(u"see [3], pg. 38: AggregationKind is an "
                                  "enumeration type that specifies the literals "
                                  "for defining the kind of aggregation of a "
@@ -281,16 +272,13 @@ class IDependency(IUMLElement):
     implementation. This means that the complete semantics of the depending
     elements is either semantically or structurally dependent on the definition
     of the supplier element(s).
-
     """
-
     client = Attribute(u'The element(s) dependent on the supplier element(s). '
                         'In some cases (such as a Trace Abstraction) the '
                         'assignment of direction (that is, the designation of '
                         'the client element) is at the discretion of the ',
                         'modeler, and is a stipulation. Subsets '
                         'DirectedRelationship::source.')
-
     supplier = Attribute(u'The element(s) independent of the client element(s), '
                           'in the same respect and the same dependency '
                           'relationship. In some directed dependency '
@@ -312,22 +300,14 @@ class IActivityEdge(IUMLElement):
     A sequencing relationship between two activity nodes, possibly including
     data. ([2], pg. 157)
     """
-
-    activity = Attribute(
-        u'Activity containing the edge. Computed property'
-    )
-    source = Attribute(
-        u'Node from which tokens are taken when they traverse the edge.'
-        u'Provices IActivityNode objects.'
-    )
-    target = Attribute(
-        u'Node to which tokens are put when they traverse the edge.'
-        u'Provices IActivityNode objects.'
-    )
-    guard = Attribute(
-        u'Specification evaluated at runtime to determine if the edge can be'
-        u'traversed. A python expression which must evaluate to True'
-    )
+    activity = Attribute(u'Activity containing the edge. Computed property')
+    source = Attribute(u'Node from which tokens are taken when they traverse '
+                       u'the edge. Provices IActivityNode objects.')
+    target = Attribute(u'Node to which tokens are put when they traverse the '
+                       u'edge. Provices IActivityNode objects.')
+    guard = Attribute(u'Specification evaluated at runtime to determine if '
+                      u'the edge can be traversed. A python expression which '
+                      u'must evaluate to True')
 
 
 class IActivityNode(IUMLElement):
@@ -340,35 +320,25 @@ class IActivityNode(IUMLElement):
     control nodes, object nodes (including pins and parameter nodes), and
     structured nodes. ([2], 159ff)
     """
-    activity = Attribute(
-        u'Activity the ActivityNode belongs to. Computed property'
-    )
-    incoming_edges = Attribute(
-        u'Edges that have the node as target. Computed property'
-    )
-    outgoing_edges = Attribute(
-        u'Edges that have the node as source. Computed property'
-    )
+    activity = Attribute(u'Activity the ActivityNode belongs to. Computed '
+                         u'property')
+    incoming_edges = Attribute(u'Edges that have the node as target. Computed '
+                               u'property')
+    outgoing_edges = Attribute(u'Edges that have the node as source. Computed '
+                               u'property')
 
 
 class IAction(IActivityNode):
     """Abstract Base Class
     A primitive activity node whose execution results in a change in the
     state of the system or the return of a value. ([2], pg.136)
-
     """
-    context = Attribute(
-        u'The classifier that owns the behavior of which this action is a part.'
-        u'Computed.'
-    )
-    preconditions = Attribute(
-        u'Constraint that must be satisfied when execution is started.'
-        u'List of IConstraints.'
-    )
-    postconditions = Attribute(
-        u'Constraint that must be satisfied when execution is completed.'
-        u'List of IConstraints.'
-    )
+    context = Attribute(u'The classifier that owns the behavior of which this '
+                        u'action is a part. Computed.')
+    preconditions = Attribute(u'Constraint that must be satisfied when '
+                              u'execution is started. List of IConstraints.')
+    postconditions = Attribute(u'Constraint that must be satisfied when '
+                               u'execution is completed. List of IConstraints.')
 
 
 class IBehavior(IUMLElement):
@@ -379,19 +349,13 @@ class IBehavior(IUMLElement):
     A specification of how the state of a classifier changes over time. Behavior
     is specialized into activity, interaction, and state machine. A behavior
     describes the dynamics of an entire classifier as a unit. ([2], 190)
-
     """
-    context = Attribute(
-        u'The classifier that is the context for the execution of the behavior.'
-    )
-    preconditions = Attribute(
-        u'List of IConstraints which must evaluate to True when the behavior is'
-        u'invoked.'
-    )
-    postconditions = Attribute(
-        u'List of IConstraints which must evaluate to True when the behavior is'
-        u'completed.'
-    )
+    context = Attribute(u'The classifier that is the context for the '
+                        u'execution of the behavior.')
+    preconditions = Attribute(u'List of IConstraints which must evaluate '
+                              u'to True when the behavior is invoked.')
+    postconditions = Attribute(u'List of IConstraints which must evaluate '
+                               u'to True when the behavior is completed.')
 
 
 class IControlNode(IActivityNode):
@@ -420,20 +384,13 @@ class IActivity(IBehavior):
     to inputs of another. Activities can be invoked by actions and as
     constituents of other behaviors, such as state machine transitions.
     ([2], 149ff)
-
     """
-    nodes = Attribute(
-        u'Nodes coordinated by the activity.'
-        u'List of IActivityNode providing objects, Owned.'
-    )
-    edges = Attribute(
-        u'Edges expressing flow between nodes of the activity.'
-        u'List of IEdge providing objects, Owned.'
-    )
+    nodes = Attribute(u'Nodes coordinated by the activity. List of '
+                      u'IActivityNode providing objects, Owned.')
+    edges = Attribute(u'Edges expressing flow between nodes of the activity.'
+                      u'List of IEdge providing objects, Owned.')
     # convinience accessor
-    actions = Attribute(
-        u'List of IAction providing objects, Owned'
-    )
+    actions = Attribute(u'List of IAction providing objects, Owned')
 
 
 class IOpaqueAction(IAction):
@@ -450,7 +407,6 @@ class IInitialNode(IControlNode):
 
     [1], pg. 378 does not define the constraint that initial nodes can only have
     one outgoing edge but [2], pg. 392 makes such a definition.
-
     """
     incoming_edges = Attribute(u'Is always empty.')
 
@@ -506,15 +462,11 @@ class IConstraint(IUMLElement):
     constraint. The context of the constraint is the element which references
     the constraint and for which the rule apply. A constraint has access to all
     Attributes the context provides.
-
     """
-    specification = Attribute(
-        u"The python expression which must be fulfilled."
-    )
-    constrained_element = Attribute(
-        u"The element which references the constraint."
-        u"This element is the constraint's context."
-    )
+    specification = Attribute(u"The python expression which must be fulfilled.")
+    constrained_element = Attribute(u"The element which references the "
+                                    u"constraint. This element is the "
+                                    u"constraint's context.")
 
 
 class IPreConstraint(IConstraint):

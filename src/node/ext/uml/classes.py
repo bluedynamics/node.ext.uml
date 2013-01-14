@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 from node.ext.uml.core import (
     UMLElement,
     NODEFAULTMARKER,
@@ -17,9 +17,8 @@ from node.ext.uml.interfaces import (
 )
 
 
+@implementer(IClass)
 class Class(UMLElement):
-    implements(IClass)
-
     isAbstract = False
 
     @property
@@ -27,8 +26,8 @@ class Class(UMLElement):
         return self.filtereditervalues(IOperation)
 
 
+@implementer(IInterface)
 class Interface(UMLElement):
-    implements(IInterface)
 
     @property
     def operations(self):
@@ -52,24 +51,24 @@ class _TypedElement(UMLElement):
     type = property(_gettype, _settype)
 
 
+@implementer(IProperty)
 class Property(_TypedElement):
-    implements(IProperty)
 
     def __init__(self, name=None):
         super(Property, self).__init__(name)
         self.default = NODEFAULTMARKER
 
 
+@implementer(IOperation)
 class Operation(UMLElement):
-    implements(IOperation)
 
     @property
     def parameter(self):
         return self.filtereditervalues(IParameter)
 
 
+@implementer(IParameter)
 class Parameter(_TypedElement):
-    implements(IParameter)
 
     def __init__(self, name=None):
         super(Parameter, self).__init__(name)
@@ -82,8 +81,8 @@ class Parameter(_TypedElement):
 ###############################################################################
 
 
+@implementer(IGeneralization)
 class Generalization(UMLElement):
-    implements(IGeneralization)
 
     def __init__(self, name=None):
         super(Generalization, self).__init__(name)
@@ -104,8 +103,8 @@ class Generalization(UMLElement):
     general = property(_getgeneral, _setgeneral)
 
 
+@implementer(IInterfaceRealization)
 class InterfaceRealization(UMLElement):
-    implements(IInterfaceRealization)
 
     def __init__(self, name=None):
         super(InterfaceRealization, self).__init__(name)
@@ -126,8 +125,8 @@ class InterfaceRealization(UMLElement):
     contract = property(_getcontract, _setcontract)
 
 
+@implementer(IAssociation)
 class Association(UMLElement):
-    implements(IAssociation)
 
     def __init__(self, name=None):
         super(Association, self).__init__(name)
@@ -147,9 +146,8 @@ class Association(UMLElement):
         return [_ for _ in self.filtereditervalues(IAssociationEnd)]
 
 
+@implementer(IAssociationEnd)
 class AssociationEnd(UMLElement):
-    implements(IAssociationEnd)
-
     SHARED = 'shared'
     COMPOSITE = 'composite'
     AGGREGATIONS = [SHARED, COMPOSITE]
@@ -184,8 +182,8 @@ class AssociationEnd(UMLElement):
     association = property(_getassociation, _setassociation)
 
 
+@implementer(IDependency)
 class Dependency(UMLElement):
-    implements(IDependency)
 
     def __init__(self, name=None):
         super(Dependency, self).__init__(name)
