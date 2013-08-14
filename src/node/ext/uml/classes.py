@@ -151,8 +151,8 @@ class Association(UMLElement):
 class AssociationClass(Association, Class):
 
     def __init__(self, name=None):
-        super(Association, self).__init__(name)
-        super(Class, self).__init__(name)
+        Association.__init__(self, name)
+        Class.__init__(self, name)
 
 
 @implementer(IAssociationEnd)
