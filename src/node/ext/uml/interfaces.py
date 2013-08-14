@@ -243,10 +243,12 @@ class IAssociation(IUMLElement):
                            "Association::memberEnd Classifier::feature, and"
                            "Namespace::ownedMember.")
 
-class IAssociationClass(IClass, IAssociation):
-    '''UML Association Element.
 
-    see [3], section 7.3.4'''
+class IAssociationClass(IClass, IAssociation):
+    """UML Association Element.
+
+    see [3], section 7.3.4"""
+
 
 class IAssociationEnd(IUMLElement):
     """OwnedElement of Associations or Classes."""
