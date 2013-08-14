@@ -13,6 +13,7 @@ from node.ext.uml.interfaces import (
     IInterfaceRealization,
     IAssociation,
     IAssociationEnd,
+    IAssociationClass,
     IDependency,
 )
 
@@ -145,6 +146,13 @@ class Association(UMLElement):
     def ownedEnds(self):
         return [_ for _ in self.filtereditervalues(IAssociationEnd)]
 
+@implementer(IAssociationClass)
+@implementer(IClass)
+class AssociationClass(Class, Association):
+    def __init__(self, name=None):
+        super(Association, self).__init__(name)
+        super(Class, self).__init__(name)
+        
 
 @implementer(IAssociationEnd)
 class AssociationEnd(UMLElement):
